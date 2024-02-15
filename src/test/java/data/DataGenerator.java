@@ -1,12 +1,11 @@
-package ru.netology.delivery.data;
+package data;
+
 
 import com.github.javafaker.Faker;
 import lombok.Value;
-import lombok.val;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
 
 public class DataGenerator {
     private static final Faker faker = new Faker(new Locale("ru-RU"));
@@ -15,23 +14,7 @@ public class DataGenerator {
     }
 
     public static String generateDate(int shift) {
-        LocalDate date = LocalDate.now().plusDays(shift);
-        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-
-    public static String generateCity(String locale) {
-        String city = faker.address().city();
-        return city;
-    }
-
-    public static String generateName(String locale) {
-        String name = faker.name().lastName() + " " + faker.name().firstName();
-        return name;
-    }
-
-    public static String generatePhone(String locale) {
-        String phone = faker.phoneNumber().phoneNumber();
-        return phone;
+        return java.time.LocalDate.now().plusDays(shift).format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public static class Registration {
@@ -47,15 +30,44 @@ public class DataGenerator {
         }
     }
 
+    public static String generateCity(String locale) {
+        return faker.address().city();
+    }
+
+    public static String generateName(String locale) {
+        return faker.name().lastName() + " " + faker.name().firstName();
+    }
+
+    public static String generatePhone(String locale) {
+        return faker.phoneNumber().phoneNumber();
+    }
+
     @Value
     public static class UserInfo {
         String city;
         String name;
         String phone;
+
+        public UserInfo(String city, String name, String phone) {
+            this.city = city;
+            this.name = name;
+            this.phone = phone;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
     }
 
     public static void main(String[] args) {
-
         UserInfo user = Registration.generateUser("ru");
         System.out.println("Generated User: " + user);
     }
